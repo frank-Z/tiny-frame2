@@ -4,28 +4,47 @@ const http = require('http');
 const url = require('url');
 
 class app {
+    /**
+     * constructor
+     */
     constructor() {
         this._q = [];
     }
 
+    /**
+     * gather fn
+     * @param ro route
+     * @param fn function
+     */
     use(ro, fn) {
         if (!fn) {
             fn = ro;
             ro = "/"
         }
+        /* push routes and fns into queue */
         this._q.push({ro: ro, fn: fn})
     }
 
+    /**
+     * handle fns
+     * @param ctx  context
+     * @param cb callback
+     */
     handle(ctx, cb) {
         let self = this;
         let i = 0;
+
+        /* get pathname */
         const _pathname = url.parse(ctx.req.url).pathname;
+
+        /* recursion */
         next();
 
         function next() {
             let fn = self._q[i];
             if (fn && fn.fn) {
                 i++;
+                /* check tpl and pathname  */
                 if (fn.ro === _pathname.slice(0, fn.ro.length)) { //todo..把这个校验改成类似正则的匹配
                     fn.fn(ctx, next);
                 } else {
@@ -37,8 +56,15 @@ class app {
         }
     }
 
+    /**
+     * bind port and trigger handle function
+     * @param port
+     * @param cb
+     */
     listen(port, cb) {
         let self = this;
+
+        /* create server  */
         http.createServer(function (req, res) {
             let ctx = {
                 req: req,
