@@ -3,7 +3,7 @@
 const http = require('http');
 const url = require('url');
 
-class app {
+class App {
     /**
      * constructor
      */
@@ -86,4 +86,4 @@ const response = (ctx) => {
     ctx.res.end("" + ctx.body);
 };
 
-module.exports = app;
+module.exports = App;
