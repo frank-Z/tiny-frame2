@@ -4,25 +4,36 @@ const http = require('http');
 const util = require('util');
 
 const Context = require('./context');
-const Router= require('./Router');
+const Router = require('./router');
+const preHandle = require('./pre-handle');
+const postHandle = require('./post-handle')
 
 class Application {
 
     constructor() {
-        this.__queue = [];
+        this._queue = {
+            head: preHandle,
+            tail: preHandle,
+        };
+        this._queue.tail.next = postHandle
     }
 
-    use(route = '/', action = route) {
-        if(typeof route === 'function') {
-            route = '/'
+    use(route, action) {
+        if (typeof route === 'function') {
+            action = route;
+            route = '/';
         }
-        this.__queue.push(new Router({ route, action }));
+        let rt = new Router(route, action);
+        rt.next = this._queue.tail.next
+        this._queue.tail.next = rt
+        this._queue.tail = rt
         return this;
     }
 
     handle(request, response) {
         let context = new Context({ request, response });
-        this.__compose(this.__queue)(context);
+        let fn = this._compose(this._queue.head);
+        fn(context);
     }
 
     listen(port) {
@@ -30,11 +41,10 @@ class Application {
         return util.promisify(app.listen.bind(app))(port);
     }
 
-    __compose(queue) {
-        if (queue.length === 1) {
-            return context => queue[0].doAction(context,()=> {});
-        }
-        return context => queue[0].doAction(context,()=> this.__compose(queue.slice(1))(context));
+    _compose(router) {
+        return router.next === null ?
+            context => router.doAction(context) :
+            context => router.doAction(context, () => this._compose(router.next)(context));
     }
 }
 
