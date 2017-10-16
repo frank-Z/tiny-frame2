@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const APP = require('./modules/connect/application');
 
@@ -6,7 +6,7 @@ const app = new APP();
 
 app.use(async (ctx, next) => {
     console.log("中间件1");
-    await next()
+    await next();
     console.log("##中间件1");
 });
 
@@ -18,7 +18,7 @@ app.use('/test',async (ctx, next) => {
 app.use(async (ctx, next) => {
     console.log("中间件3");
     ctx.body = "44444";
-    await next()
+    await next();
 });
 
 app.listen(3000);
