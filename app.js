@@ -1,6 +1,6 @@
 "use strict";
 
-const APP = require('./modules/connect');
+const APP = require('./modules/connect/application');
 
 const app = new APP();
 
@@ -10,7 +10,7 @@ app.use(async (ctx, next) => {
     console.log("##中间件1");
 });
 
-app.use(async (ctx, next) => {
+app.use('/test',async (ctx, next) => {
     console.log("中间件2");
     await next();
     console.log("##中间件2");

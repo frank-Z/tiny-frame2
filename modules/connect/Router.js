@@ -1,18 +1,16 @@
 const url = require('url')
 
-class Middleware {
+class Router {
 
-    constructor({ route = '/', action }) {
-        this.route = route
+    constructor({route = '/', action}) {
+        this.route = route;
         if (action) {
             this.action = action
         }
-        this.next = null
     }
 
     doAction(context, next) {
-        let pathname = url.parse(context.request.url).pathname
-        console.log(pathname)
+        let pathname = url.parse(context.request.url).pathname;
         if (pathname !== this.route) {
             return next()
         }
@@ -20,7 +18,7 @@ class Middleware {
     }
 }
 
-class PreHandle extends Middleware {
+class PreHandle extends Router {
     constructor() {
         super({})
     }
@@ -31,20 +29,20 @@ class PreHandle extends Middleware {
     }
 }
 
-class PostHandle extends Middleware {
+class PostHandle extends Router {
     constructor() {
         super({})
     }
 
 
     doAction(context) {
-        context.response.end('404')
+        context.response.end(' ' + context.body || 'nothing')
     }
 
 }
 
 module.exports = {
-    Middleware,
+    Router,
     preHandle: new PreHandle(),
     PostHandle: new PostHandle(),
 }

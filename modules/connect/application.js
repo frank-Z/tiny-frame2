@@ -1,8 +1,7 @@
-const http = require('http')
-const url = require('url')
-const util = require('util')
-const Context = require('./context')
-const { Middleware, preHandle } = require('./middleware')
+const http = require('http');
+const util = require('util');
+const Context = require('./context');
+const { Router, preHandle } = require('./Router');
 
 class Application {
 
@@ -11,23 +10,23 @@ class Application {
     }
 
     use(route = '/', action = route) {
-        if(typeof route === 'function') { 
-            route = '/' 
+        if(typeof route === 'function') {
+            route = '/'
         }
-        let mw = new Middleware({ route, action })
-        this.__queue[this.__queue.length - 1].next = mw
-        this.__queue.push(mw)
+        let mw = new Router({ route, action });
+        //this.__queue[this.__queue.length - 1].next = mw;
+        this.__queue.push(mw);
         return this
     }
 
     handle(request, response) {
-        let context = new Context({ request, response })
+        let context = new Context({ request, response });
         this.__compose(this.__queue)(context)
     }
     
 
     listen(port) {
-        let app = http.createServer(this.handle.bind(this))
+        let app = http.createServer(this.handle.bind(this));
         return util.promisify(app.listen.bind(app))(port)
     }
 
@@ -39,4 +38,4 @@ class Application {
     }
 }
 
-module.exports = Application
+module.exports = Application;
