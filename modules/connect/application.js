@@ -6,7 +6,7 @@ const util = require('util');
 const Context = require('./context');
 const Router = require('./router');
 const preHandle = require('./pre-handle');
-const postHandle = require('./post-handle')
+const postHandle = require('./post-handle');
 
 class Application {
 
@@ -24,9 +24,9 @@ class Application {
             route = '/';
         }
         let rt = new Router(route, action);
-        rt.next = this._queue.tail.next
-        this._queue.tail.next = rt
-        this._queue.tail = rt
+        rt.next = this._queue.tail.next;
+        this._queue.tail.next = rt;
+        this._queue.tail = rt;
         return this;
     }
 

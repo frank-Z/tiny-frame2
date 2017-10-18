@@ -1,6 +1,6 @@
 'use strict';
 
-const time = () => n
+const time = () => n;
 
 class Logger {
 

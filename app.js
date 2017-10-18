@@ -1,9 +1,9 @@
 'use strict';
 
-const Application = require('./modules/connect/application');
-const { log } = require('./util/logger')
+const App = require('./modules/connect');
+const { log } = require('./util/logger');
 
-const app = new Application();
+const app = new App();
 
 app.use(async (ctx, next) => {
     log.info("中间件1");
