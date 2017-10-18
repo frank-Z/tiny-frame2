@@ -6,7 +6,7 @@ class Router {
 
     constructor(route, action) {
         this.route = route || '/';
-        this.next = null
+        this.next = null;
         if (action) {
             this.action = action;
         }

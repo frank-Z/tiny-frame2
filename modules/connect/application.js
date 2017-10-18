@@ -15,7 +15,7 @@ class Application {
             head: preHandle,
             tail: preHandle,
         };
-        this._queue.tail.next = postHandle
+        this._queue.tail.next = postHandle;
     }
 
     use(route, action) {

@@ -16,7 +16,7 @@ class Logger {
         return {
             info:info,
             error:error
-        }
+        };
     }
 }
 

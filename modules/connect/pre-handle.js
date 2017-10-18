@@ -5,7 +5,7 @@ const Router = require('./router');
 class PreHandle extends Router {
 
     action(context, next) {
-        return next()
+        return next();
     }
 }
 
