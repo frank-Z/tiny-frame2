@@ -22,7 +22,7 @@ class Router {
 
     action(context, next) {
         if (next) {
-            return next()
+            return next();
         }
     }
 }

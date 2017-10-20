@@ -19,7 +19,7 @@ app.use('/test', async (ctx, next) => {
 
 app.use(async (ctx, next) => {
     logger.info("中间件3");
-    ctx.body = "44444";
+    ctx.body = {a:1,b:2};
     await next();
 });
 
