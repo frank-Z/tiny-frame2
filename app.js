@@ -1,9 +1,14 @@
 'use strict';
 
 const App = require('./modules/connect');
+const bodyParse = require('./modules/parser');
 const logger = require('./modules/logger').logger('app');
 
 const app = new App();
+
+app.use(bodyParse.json({maxSize: '10mb'}));
+app.use(bodyParse.urlencoded());
+// app.use(bodyParse.multer());
 
 app.use(async (ctx, next) => {
     logger.info("中间件1");
@@ -19,7 +24,7 @@ app.use('/test', async (ctx, next) => {
 
 app.use(async (ctx, next) => {
     logger.info("中间件3");
-    ctx.body = {a:1,b:2};
+    ctx.body = {a: 1, b: 2};
     await next();
 });
 

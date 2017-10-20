@@ -4,6 +4,4 @@
 
 'use strict';
 
-module.exports = opts =>{
-
-};
+module.exports = require('./parser');
