@@ -15,6 +15,7 @@ class PreHandle extends Router {
     static requestHandle(req) {
         PreHandle.ipMount(req);
         PreHandle.methodReset(req);
+        PreHandle.contentTypeMount(req);
     }
 
     static responseHandle(res) {
@@ -30,6 +31,10 @@ class PreHandle extends Router {
 
         ip = ip.split(':').slice(-1).join('');
         req.ip = ip;
+    }
+
+    static contentTypeMount(req){
+
     }
 
     static methodReset(req) {
@@ -62,6 +67,7 @@ class PreHandle extends Router {
             }
         };
     }
+
 }
 
 module.exports = new PreHandle();
